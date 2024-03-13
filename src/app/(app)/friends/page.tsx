@@ -8,7 +8,7 @@ import Markdown from 'markdown-to-jsx'
 import type { LinkModel } from '@mx-space/api-client'
 import type { FC } from 'react'
 
-import { LinkState, LinkType } from '@mx-space/api-client'
+import { LinkState, LinkType, RequestError } from '@mx-space/api-client'
 
 import { NotSupport } from '~/components/common/NotSupport'
 import { Avatar } from '~/components/ui/avatar'
@@ -18,7 +18,7 @@ import { Loading } from '~/components/ui/loading'
 import { useModalStack } from '~/components/ui/modal'
 import { BottomToUpTransitionView } from '~/components/ui/transition/BottomToUpTransitionView'
 import { shuffle } from '~/lib/lodash'
-import { apiClient } from '~/lib/request'
+import { apiClient, getErrorMessageFromRequestError } from '~/lib/request'
 import { toast } from '~/lib/toast'
 import { useAggregationSelector } from '~/providers/root/aggregation-data-provider'
 
@@ -116,7 +116,7 @@ type FriendSectionProps = {
 
 const FriendSection: FC<FriendSectionProps> = ({ data }) => {
   return (
-    <section className="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
+    <section className="grid grid-cols-2 gap-6 md:grid-cols-3 2xl:grid-cols-3">
       {data.map((link) => {
         return (
           <BottomToUpTransitionView key={link.id} duration={50}>
@@ -243,6 +243,7 @@ const ApplyLinkInfo: FC = () => {
     queryKey: ['can-apply'],
     queryFn: () => apiClient.link.canApplyLink(),
     initialData: true,
+    refetchOnMount: 'always',
   })
   const { present } = useModalStack()
   if (!canApply) {
@@ -390,15 +391,27 @@ const FormModal = () => {
     (e: any) => {
       e.preventDefault()
 
-      apiClient.link.applyLink({ ...state }).then(() => {
-        dismissTop()
-        toast.success('好耶！')
-      })
+      apiClient.link
+        .applyLink({ ...state })
+        .then(() => {
+          dismissTop()
+          toast.success('好耶！')
+        })
+        .catch((err) => {
+          if (err instanceof RequestError)
+            toast.error(getErrorMessageFromRequestError(err))
+          else {
+            toast.error(err.message)
+          }
+        })
     },
     [state],
   )
   return (
-    <Form className="w-[300px] space-y-4 text-center" onSubmit={handleSubmit}>
+    <Form
+      className="w-full space-y-4 text-center lg:w-[300px]"
+      onSubmit={handleSubmit}
+    >
       {inputs.map((input) => (
         <FormInput
           key={input.name}

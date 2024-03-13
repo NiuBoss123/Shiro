@@ -1,10 +1,9 @@
 'use client'
 
 import React from 'react'
-import clsx from 'clsx'
 import type { FC } from 'react'
 
-import { useIsMobile } from '~/atoms'
+import { useIsMobile } from '~/atoms/hooks'
 
 import { TocAside } from '../toc'
 import { ReadIndicator } from './ReadIndicator'
@@ -25,7 +24,7 @@ const ArticleRightAsideImpl: FC<{
         <TocAside
           as="div"
           className="static ml-4"
-          treeClassName={clsx('absolute h-full min-h-[120px] flex flex-col')}
+          treeClassName="absolute h-full min-h-[120px] flex flex-col"
           accessory={ReadIndicator}
         />
       </div>

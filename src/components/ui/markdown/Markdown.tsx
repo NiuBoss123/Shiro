@@ -32,11 +32,13 @@ import {
   MTableBody,
   MTableHead,
   MTableRow,
+  MTableTd,
 } from './renderers'
 import { MDetails } from './renderers/collapse'
 import { MFootNote } from './renderers/footnotes'
 import { MHeader } from './renderers/heading'
 import { MarkdownImage } from './renderers/image'
+import { Tab, Tabs } from './renderers/tabs'
 import { MTag } from './renderers/tag'
 import { getFootNoteDomId, getFootNoteRefDomId } from './utils/get-id'
 import { redHighlight } from './utils/redHighlight'
@@ -80,6 +82,7 @@ export const Markdown: FC<MdProps & MarkdownToJSX.Options & PropsWithChildren> =
       as: As = 'div',
       allowsScript = false,
       removeWrapper = false,
+
       ...rest
     } = props
 
@@ -100,12 +103,16 @@ export const Markdown: FC<MdProps & MarkdownToJSX.Options & PropsWithChildren> =
           thead: MTableHead,
           tr: MTableRow,
           tbody: MTableBody,
+          td: MTableTd,
           table: MTable,
           // FIXME: footer tag in raw html will renders not as expected, but footer tag in this markdown lib will wrapper as linkReferer footnotes
           footer: MFootNote,
           details: MDetails,
           img: MarkdownImage,
           tag: MTag,
+
+          Tabs,
+          Tab,
 
           // for custom react component
           // Tag: MTag,
@@ -189,7 +196,7 @@ export const Markdown: FC<MdProps & MarkdownToJSX.Options & PropsWithChildren> =
                   <FloatPopover
                     wrapperClassName="inline"
                     as="span"
-                    TriggerComponent={() => (
+                    triggerElement={
                       <a
                         href={`${getFootNoteDomId(content)}`}
                         onClick={(e) => {
@@ -206,7 +213,7 @@ export const Markdown: FC<MdProps & MarkdownToJSX.Options & PropsWithChildren> =
                           id={`${getFootNoteRefDomId(content)}`}
                         >{`[^${content}]`}</sup>
                       </a>
-                    )}
+                    }
                     type="tooltip"
                   >
                     {footnote?.footnote?.substring(1)}
@@ -221,6 +228,18 @@ export const Markdown: FC<MdProps & MarkdownToJSX.Options & PropsWithChildren> =
               )
             },
           },
+          codeFenced: {
+            parse(capture /* , parse, state */) {
+              return {
+                content: capture[4],
+                lang: capture[2] || undefined,
+                type: 'codeBlock',
+
+                attrs: capture[3],
+              }
+            },
+          },
+
           codeBlock: {
             react(node, output, state) {
               return (
@@ -228,7 +247,20 @@ export const Markdown: FC<MdProps & MarkdownToJSX.Options & PropsWithChildren> =
                   key={state?.key}
                   content={node.content}
                   lang={node.lang}
+                  attrs={node?.attrs}
                 />
+              )
+            },
+          },
+          codeInline: {
+            react(node, output, state) {
+              return (
+                <code
+                  key={state?.key}
+                  className="rounded-md bg-zinc-200 px-2 font-mono dark:bg-neutral-800"
+                >
+                  {node.content}
+                </code>
               )
             },
           },

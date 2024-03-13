@@ -1,12 +1,13 @@
 'use client'
 
-import { m, useAnimationControls, useForceUpdate } from 'framer-motion'
+import { m, useAnimationControls } from 'framer-motion'
 
-import { useIsMobile } from '~/atoms'
+import { useIsMobile } from '~/atoms/hooks'
 import { ThumbsupIcon } from '~/components/icons/thumbs-up'
 import { MotionButtonBase } from '~/components/ui/button'
 import { useModalStack } from '~/components/ui/modal'
 import { NumberSmoothTransition } from '~/components/ui/number-transition/NumberSmoothTransition'
+import { useForceUpdate } from '~/hooks/common/use-force-update'
 import { useIsClient } from '~/hooks/common/use-is-client'
 import { isLikedBefore, setLikeId } from '~/lib/cookie'
 import { clsxm } from '~/lib/helper'
@@ -66,16 +67,18 @@ const SubscribeButton = () => {
 }
 
 const PostAsideCommentButton = () => {
-  const { title, id } =
+  const { title, id, allowComment } =
     useCurrentPostDataSelector((data) => {
       return {
         title: data?.title,
         id: data?.id,
+        allowComment: data?.allowComment,
       }
     }) || {}
   const isEof = useIsEoFWrappedElement()
   if (!id) return null
   if (isEof) return null
+  if (!allowComment) return null
 
   return <AsideCommentButton refId={id} title={title!} />
 }

@@ -25,7 +25,7 @@ interface Props {
   content: string
 }
 
-export const HighLighter: FC<Props> = (props) => {
+export const HighLighterPrismCdn: FC<Props> = (props) => {
   const { lang: language, content: value } = props
 
   const handleCopy = useCallback(() => {
@@ -136,9 +136,6 @@ const useLoadHighlighter = (ref: React.RefObject<HTMLElement>) => {
           })
         } else {
           requestAnimationFrame(() => {
-            window.Prism?.highlightAll()
-            // highlightAll twice
-
             requestAnimationFrame(() => {
               window.Prism?.highlightAll()
             })

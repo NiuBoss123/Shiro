@@ -21,7 +21,7 @@ export const PostMetaBar: Component<{
   meta: Partial<
     Pick<PostModel, 'created' | 'modified' | 'category' | 'tags' | 'count'>
   >
-}> = ({ className, meta }) => {
+}> = ({ className, meta, children }) => {
   const { present } = useModalStack()
   const router = useRouter()
   return (
@@ -45,7 +45,7 @@ export const PostMetaBar: Component<{
             wrapperClassName="text-xs"
             as="span"
             type="tooltip"
-            TriggerComponent={() => '(已编辑)'}
+            triggerElement="(已编辑)"
           >
             编辑于 <RelativeTime date={meta.modified} />
           </FloatPopover>
@@ -117,6 +117,8 @@ export const PostMetaBar: Component<{
           </span>
         </div>
       )}
+
+      {children}
     </div>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { useForceUpdate } from 'framer-motion'
 import { produce } from 'immer'
 import { atom, useAtom } from 'jotai'
 import type { WriteEditEvent } from '~/events'
@@ -12,6 +11,7 @@ import { StyledButton } from '~/components/ui/button'
 import { useModalStack } from '~/components/ui/modal'
 import { EmitKeyMap } from '~/constants/keys'
 import { useBeforeUnload } from '~/hooks/common/use-before-unload'
+import { useForceUpdate } from '~/hooks/common/use-force-update'
 import { throttle } from '~/lib/lodash'
 import { buildNSKey } from '~/lib/ns'
 
@@ -63,7 +63,6 @@ const AutoSaverProvider: FC<PropsWithChildren> = ({ children }) => {
       const id = dto.id || ('categoryId' in dto ? 'new-post' : 'new-note')
       const nsKey = buildNSKey(`auto-save-${id}`)
 
-      console.debug('auto save', dto)
       localStorage.setItem(nsKey, JSON.stringify(dto))
     }, 300)
     window.addEventListener(EmitKeyMap.EditDataUpdate, handler)
@@ -104,14 +103,11 @@ export const useAutoSaver = <T extends { id: string }>([
       editingData.id || ('categoryId' in editingData ? 'new-post' : 'new-note')
     const nsKey = buildNSKey(`auto-save-${id}`)
 
-    console.log('recovery key', nsKey)
     const autoSavedDataString = localStorage.getItem(nsKey)
 
     if (!autoSavedDataString) return
     const autoSavedData = JSON.parse(autoSavedDataString)
     if (!autoSavedData) return
-
-    console.log('recovery data', autoSavedData)
 
     setTimeout(() => {
       present({

@@ -7,12 +7,13 @@ import type { PluginCtx } from './types'
 import { imageSchema } from '@milkdown/preset-commonmark'
 import { $view } from '@milkdown/utils'
 
-import { useIsMobile } from '~/atoms'
+import { useIsMobile } from '~/atoms/hooks'
 import { MotionButtonBase, StyledButton } from '~/components/ui/button'
 import { FloatPopover } from '~/components/ui/float-popover'
 import { Form, FormInput } from '~/components/ui/form'
 import { FixedZoomedImage } from '~/components/ui/image'
 import { useCurrentModal, useModalStack } from '~/components/ui/modal'
+import { getToken } from '~/lib/cookie'
 import { toast } from '~/lib/toast'
 
 const base64ToFile = (base64: string) => {
@@ -37,6 +38,7 @@ const Image = () => {
     if (src.startsWith('http')) return
     const formData = new FormData()
     formData.append('file', base64ToFile(src))
+    formData.append('token', getToken()!)
 
     fetch('/api/s3', {
       method: 'POST',

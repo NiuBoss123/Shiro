@@ -14,7 +14,7 @@ import {
   RecentlyAttitudeResultEnum,
 } from '@mx-space/api-client'
 
-import { useIsLogged } from '~/atoms'
+import { useIsLogged } from '~/atoms/hooks'
 import { TiltedSendIcon } from '~/components/icons/TiltedSendIcon'
 import { CommentBoxRootLazy, CommentsLazy } from '~/components/modules/comment'
 import { PeekLink } from '~/components/modules/peek/PeekLink'
@@ -62,7 +62,8 @@ const PostBox = () => {
   return (
     <form onSubmit={preventDefault} className="mb-8">
       <TextArea
-        className="h-[150px] rounded-md border border-slate-200 bg-zinc-50 dark:border-zinc-800 dark:bg-neutral-900/50"
+        wrapperClassName="h-[150px]"
+        className="rounded-md border border-slate-200 bg-zinc-50 dark:border-zinc-800 dark:bg-neutral-900/50"
         value={value}
         placeholder="此刻在想什么？"
         onChange={(e) => {

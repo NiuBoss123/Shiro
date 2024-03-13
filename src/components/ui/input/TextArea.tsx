@@ -6,7 +6,7 @@ import type {
   TextareaHTMLAttributes,
 } from 'react'
 
-import { useIsMobile } from '~/atoms'
+import { useIsMobile } from '~/atoms/hooks'
 import { useInputComposition } from '~/hooks/common/use-input-composition'
 import { clsxm } from '~/lib/helper'
 
@@ -16,9 +16,11 @@ export const TextArea = forwardRef<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement
   > &
-    PropsWithChildren
+    PropsWithChildren<{
+      wrapperClassName?: string
+    }>
 >((props, ref) => {
-  const { className, children, ...rest } = props
+  const { className, wrapperClassName, children, ...rest } = props
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const handleMouseMove = useCallback(
@@ -34,7 +36,10 @@ export const TextArea = forwardRef<
   const inputProps = useInputComposition(props)
   return (
     <div
-      className="group relative h-full overflow-hidden [--spotlight-color:oklch(var(--a)_/_0.12)]"
+      className={clsxm(
+        'group relative h-full overflow-hidden [--spotlight-color:oklch(var(--a)_/_0.12)]',
+        wrapperClassName,
+      )}
       onMouseMove={handleMouseMove}
     >
       {!isMobile && (

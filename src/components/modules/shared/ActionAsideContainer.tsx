@@ -1,6 +1,8 @@
 'use client'
 
-import { useViewport } from '~/atoms'
+import clsx from 'clsx'
+
+import { useViewport } from '~/atoms/hooks'
 import { clsxm } from '~/lib/helper'
 import { usePageScrollLocationSelector } from '~/providers/root/page-scroll-info-provider'
 import { useIsEoFWrappedElement } from '~/providers/shared/WrappedElementProvider'
@@ -28,13 +30,19 @@ export const ActionAsideContainer: Component = ({ className, children }) => {
   return (
     <div
       className={clsxm(
-        'absolute bottom-0 left-0 -mb-4 flex max-h-[300px] flex-col gap-6 p-4 transition-all duration-200 ease-in-out',
+        'absolute bottom-0 left-0 -mb-4 flex max-h-[300px] p-4 transition-all duration-200 ease-in-out',
         !isEOA ? 'opacity-20 hover:opacity-100' : '',
         className,
-        isEndOfPage && 'bottom-[-30px] flex-row',
       )}
     >
-      {children}
+      <div
+        className={clsx(
+          isEndOfPage && '-rotate-90 [&>button]:!rotate-90',
+          'flex origin-top-left flex-col gap-6 duration-200 ease-in-out [&>button]:duration-200',
+        )}
+      >
+        {children}
+      </div>
     </div>
   )
 }

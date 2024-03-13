@@ -2,6 +2,7 @@ import type { PostModel } from '@mx-space/api-client'
 
 import { AckRead } from '~/components/common/AckRead'
 import { ClientOnly } from '~/components/common/ClientOnly'
+import { Presence } from '~/components/modules/activity'
 import {
   PostActionAside,
   PostBottomBarAction,
@@ -47,10 +48,11 @@ const PostPage = (props: PostModel) => {
           <SummarySwitcher data={props} />
           <PostOutdate />
 
-          <PostRelated />
+          <PostRelated infoText="阅读此文章之前，你可能需要首先阅读以下的文章才能更好的理解上下文。" />
         </header>
-        <WrappedElementProvider>
+        <WrappedElementProvider eoaDetect>
           <ReadIndicatorForMobile />
+          <Presence />
           <PostMarkdownImageRecordProvider>
             <MarkdownSelection>
               <PostMarkdown />
@@ -65,6 +67,7 @@ const PostPage = (props: PostModel) => {
         </WrappedElementProvider>
       </article>
       <ClientOnly>
+        <PostRelated infoText="关联阅读" />
         <PostCopyright />
         {/* <SubscribeBell defaultType="post_c" /> */}
         <XLogInfoForPost />

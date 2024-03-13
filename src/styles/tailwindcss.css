@@ -7,6 +7,10 @@ html {
   line-height: 1.5;
 }
 
+html body {
+  @apply max-w-screen overflow-x-hidden;
+}
+
 @media print {
   html {
     font-size: 12px;
@@ -37,10 +41,10 @@ html {
 }
 
 .prose {
-  :where(.image-placeholder):not(:where([class~='not-prose'] *)) {
+  /* :where(.image-placeholder):not(:where([class~='not-prose'] *)) {
     margin-top: 2em;
     margin-bottom: 2em;
-  }
+  } */
 
   figure img {
     @apply mb-0 mt-0;
@@ -53,6 +57,7 @@ html.noise body::before {
   content: '';
   opacity: 0.04;
   background-repeat: repeat;
+  filter: blur(3px);
 }
 
 @media print {
@@ -103,4 +108,21 @@ a {
 
 .prose p:last-child {
   margin-bottom: 0;
+}
+
+.prose
+  :where(blockquote):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+  @apply relative border-0;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 1em;
+    background-color: theme(colors.accent);
+  }
 }

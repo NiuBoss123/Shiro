@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactComponentRender } from '~/components/ui/react-component-render/ComponentRender'
-import { lazy, Suspense, useMemo, useState } from 'react'
+import React, { lazy, Suspense, useMemo, useState } from 'react'
+import ReactDOM from 'react-dom'
 import { ToastContainer } from 'react-toastify'
 import { useIsomorphicLayoutEffect } from 'foxact/use-isomorphic-layout-effect'
 import { ThemeProvider } from 'next-themes'
@@ -11,7 +12,7 @@ import { BlockLoading } from '~/components/modules/shared/BlockLoading'
 import { Mermaid } from '~/components/modules/shared/Mermaid'
 import { ExcalidrawLoading } from '~/components/ui/excalidraw/ExcalidrawLoading'
 
-import { HighLighter } from '../code-highlighter'
+import { ShikiHighLighter } from '../code-highlighter/shiki/Shiki'
 // @ts-expect-error
 import customize from './customize.md?raw'
 import { Markdown } from './Markdown'
@@ -40,6 +41,8 @@ const ExcalidrawLazy = ({ data }: any) => {
 const CodeBlockRender = (props: {
   lang: string | undefined
   content: string
+
+  attrs?: string
 }) => {
   const Content = useMemo(() => {
     switch (props.lang) {
@@ -53,7 +56,7 @@ const CodeBlockRender = (props: {
         return <ReactComponentRender dls={props.content} />
       }
       default: {
-        return <HighLighter {...props} />
+        return <ShikiHighLighter {...props} />
       }
     }
   }, [props])
@@ -64,6 +67,9 @@ const CodeBlockRender = (props: {
     </Suspense>
   )
 }
+declare const window: any
+window.React = React
+window.ReactDOM = ReactDOM
 
 export const MarkdownCustomize: DocumentComponent = () => {
   return (
