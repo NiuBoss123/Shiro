@@ -14,6 +14,7 @@ import type { HighlighterCore } from 'shiki'
 import { getViewport } from '~/atoms/hooks'
 import { AutoResizeHeight } from '~/components/modules/shared/AutoResizeHeight'
 import { useMaskScrollArea } from '~/hooks/shared/use-mask-scrollarea'
+import { stopPropagation } from '~/lib/dom'
 import { clsxm } from '~/lib/helper'
 
 import { MotionButtonBase } from '../../button'
@@ -97,14 +98,37 @@ export const ShikiHighLighter: FC<Props> = (props) => {
     }
   }, [value, codeBlockRef])
 
-  const renderedHtml = useMemo(() => {
+  const highlightedHtml = useMemo(() => {
     if (!highlighter) return ''
     return codeHighlighter(highlighter, {
       attrs: attrs || '',
+      // code: `${value.split('\n')[0].repeat(10)} // [!code highlight]\n${value}`,
       code: value,
       lang: language ? language.toLowerCase() : '',
     })
   }, [attrs, language, value, highlighter])
+
+  const [renderedHtml, setRenderedHtml] = useState(highlightedHtml)
+  useEffect(() => {
+    setRenderedHtml(highlightedHtml)
+    requestAnimationFrame(() => {
+      if (!highlightedHtml) return
+      if (!codeBlockRef) return
+
+      const $lines = codeBlockRef.querySelectorAll('.line')
+      const maxLineWidth = Math.max(
+        ...Array.from($lines).map((el) => {
+          return (el as HTMLElement).scrollWidth
+        }),
+      )
+      $lines.forEach((el) => {
+        ;(el as HTMLElement).style.width = `${maxLineWidth}px`
+      })
+
+      const pre = codeBlockRef.querySelector('pre')
+      if (pre) setRenderedHtml(pre.outerHTML)
+    })
+  }, [codeBlockRef, highlightedHtml])
 
   const filename = useMemo(() => {
     return parseFilenameFromAttrs(attrs || '')
@@ -114,10 +138,15 @@ export const ShikiHighLighter: FC<Props> = (props) => {
     size: 'lg',
   })
 
+  const hasHeader = !!filename
+
   return (
-    <div className={clsx(styles['code-card'], 'group')}>
+    <div
+      className={clsx(styles['code-card'], 'group')}
+      onCopy={stopPropagation}
+    >
       {!!filename && (
-        <div className="z-10 flex w-full items-center justify-between rounded-t-xl bg-accent/20 px-4 py-2 text-sm">
+        <div className="z-10 flex w-full items-center justify-between rounded-t-xl bg-accent/20 px-5 py-2 text-sm">
           <span className="shrink-0 flex-grow truncate">{filename}</span>
           <span
             className="pointer-events-none flex-shrink-0 flex-grow-0"
@@ -136,14 +165,14 @@ export const ShikiHighLighter: FC<Props> = (props) => {
           {language.toUpperCase()}
         </div>
       )}
-      <div className="bg-accent/10 py-4">
+      <div className="bg-accent/5 py-4">
         <MotionButtonBase
           onClick={handleCopy}
           className={clsx(
             'absolute right-2 top-2 z-[1] flex rounded p-2 text-xs center',
             'rounded-md border border-accent/5 bg-accent/80 p-1.5 text-white backdrop-blur duration-200',
             'opacity-0 group-hover:opacity-100',
-            filename && 'top-12',
+            filename && '!top-12',
           )}
         >
           <i className="icon-[mingcute--copy-2-fill] h-4 w-4" />
@@ -152,10 +181,17 @@ export const ShikiHighLighter: FC<Props> = (props) => {
           <div
             ref={setCodeBlockRef}
             className={clsxm(
-              'relative max-h-[50vh] w-full overflow-auto scrollbar-none',
+              'relative max-h-[50vh] w-full overflow-auto',
               !isCollapsed ? '!max-h-[100%]' : isOverflow ? maskClassName : '',
               styles['scroll-container'],
             )}
+            style={
+              {
+                '--sr-margin': !hasHeader
+                  ? `${(language?.length || 0) + 1}em`
+                  : '1rem',
+              } as any
+            }
             dangerouslySetInnerHTML={
               renderedHtml
                 ? {
@@ -165,8 +201,8 @@ export const ShikiHighLighter: FC<Props> = (props) => {
             }
           >
             {renderedHtml ? undefined : (
-              <pre className="bg-transparent">
-                <code className="px-4">{value}</code>
+              <pre className="bg-transparent px-5">
+                <code className="!px-5">{value}</code>
               </pre>
             )}
           </div>

@@ -21,7 +21,7 @@ export const MLink: FC<{
       if (
         toUrlParser.host === locateUrl.host ||
         (process.env.NODE_ENV === 'development' &&
-          toUrlParser.host === 'innei.ren')
+          toUrlParser.host === 'innei.in')
       ) {
         e.preventDefault()
         const pathArr = toUrlParser.pathname.split('/').filter(Boolean)
@@ -50,7 +50,7 @@ export const MLink: FC<{
       type="tooltip"
       TriggerComponent={useCallback(
         () => (
-          <span className="inline items-center">
+          <span className="inline items-center font-sans">
             <Favicon href={href} />
             <a
               className="shiro-link--underline"

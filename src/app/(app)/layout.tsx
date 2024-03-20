@@ -14,9 +14,7 @@ import { Root } from '~/components/layout/root/Root'
 import { AccentColorStyleInjector } from '~/components/modules/shared/AccentColorStyleInjector'
 import { SearchPanelWithHotKey } from '~/components/modules/shared/SearchFAB'
 import { TocAutoScroll } from '~/components/modules/toc/TocAutoScroll'
-import { CacheKeyMap } from '~/constants/keys'
 import { attachUAAndRealIp } from '~/lib/attach-ua'
-import { onlyGetOrSetCacheInVercelButFallback } from '~/lib/cache'
 import { sansFont, serifFont } from '~/lib/fonts'
 import { getQueryClient } from '~/lib/query-client.server'
 import { AggregationProvider } from '~/providers/root/aggregation-data-provider'
@@ -44,19 +42,11 @@ export function generateViewport(): Viewport {
   }
 }
 
-const key = CacheKeyMap.RootData
 const fetchAggregationData = cache(async () => {
   const queryClient = getQueryClient()
+  attachUAAndRealIp()
 
-  return onlyGetOrSetCacheInVercelButFallback(
-    key,
-    async () => {
-      attachUAAndRealIp()
-
-      return queryClient.fetchQuery(queries.aggregation.root())
-    },
-    revalidate,
-  )
+  return queryClient.fetchQuery(queries.aggregation.root())
 })
 export const generateMetadata = async (): Promise<Metadata> => {
   const fetchedData = await fetchAggregationData()
@@ -211,7 +201,7 @@ const SayHi = () => {
         'margin: 1em 0; padding: 5px 0; background: #efefef;',
       )
       console.log(
-        `%c Shiro ${window.version} %c https://innei.ren `,
+        `%c Shiro ${window.version} %c https://innei.in `,
         'color: #fff; margin: 1em 0; padding: 5px 0; background: #39C5BB;',
         'margin: 1em 0; padding: 5px 0; background: #efefef;',
       )
