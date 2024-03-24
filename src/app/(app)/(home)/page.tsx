@@ -196,27 +196,7 @@ const Hero = () => {
           />
         </div>
 
-        <m.div
-          initial={{ opacity: 0.0001, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={softBouncePreset}
-          className={clsx(
-            'absolute inset-x-0 bottom-0 flex flex-col center',
 
-            'text-neutral-800/80 center dark:text-neutral-200/80',
-          )}
-        >
-          <small>
-            在我们身上，同时降临着繁荣与枯萎。
-            <br />
-            我们就这样，生活在此地并不断离别。
-            <br />
-            ——崩坏3 · 后崩坏书
-          </small>
-          <span className="mt-8 animate-bounce">
-            <i className="icon-[mingcute--right-line] rotate-90 text-2xl" />
-          </span>
-        </m.div>
 
         <m.div
           initial={{ opacity: 0.0001, y: 50 }}
