@@ -232,7 +232,7 @@ const Hero = () => {
             2006年4月13日，一个新生命降临于此，开启了属于他自己的
             <br />
             那一个注定被他自己「毁掉」一半的人生
-          </m.div>
+        </m.div>
       </TwoColumnLayout>
     </Screen>
   )
