@@ -207,12 +207,32 @@ const Hero = () => {
           )}
         >
           <small>
-            当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。
+            在我们身上，同时降临着繁荣与枯萎。
+            <br />
+            我们就这样，生活在此地并不断离别。
+            <br />
+            ——崩坏3 · 后崩坏书
           </small>
           <span className="mt-8 animate-bounce">
             <i className="icon-[mingcute--right-line] rotate-90 text-2xl" />
           </span>
         </m.div>
+
+        <m.div
+          initial={{ opacity: 0.0001, y: 50 }}
+          animate={{ opacity: 0.8, y: 0 }}
+          transition={{
+            ...softBouncePreset,
+            delay: 0.5,
+          }}
+          className="text-lg"
+          >
+            我想，你会认真听我这个不存在的旁白讲述这个故事的吧——
+            <br />
+            2006年4月13日，一个新生命降临于此，开启了属于他自己的
+            <br />
+            那一个注定被他自己「毁掉」一半的人生
+          </m.div>
       </TwoColumnLayout>
     </Screen>
   )
@@ -225,18 +245,21 @@ const PostScreen = () => {
     <Screen className="h-fit min-h-[120vh]">
       <TwoColumnLayout leftContainerClassName="h-[30rem] lg:h-1/2">
         <m.h2
-          initial={{
-            opacity: 0.0001,
-            y: 50,
+          initial={{ opacity: 0.0001, y: 50 }}
+          animate={{ opacity: 0.8, y: 0 }}
+          transition={{
+            ...softBouncePreset,
+            delay: 0.5,
           }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={softSpringPreset}
-          className="text-3xl font-medium leading-loose"
+          className="text-lg"
         >
-          这里记录着对技术的洞察与创新，是追求未来无限可能的见证。
+          这里记录着他对技术的粗略见解，尽管不多，但足够他用
+          <br />
+          他从不认为有人会查看这些「笔记」
+          <br />
+          出于某种原因，这些「笔记」都被写成了尽可能的便于阅读的格式
+          <br />
+          写着写着……他就迷失了方向
         </m.h2>
         <div>
           <ul className="space-y-4">
@@ -341,7 +364,7 @@ const NoteScreen = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={softBouncePreset}
             >
-              看看我的近况，我的所思所想、所作所为
+              ↓ 一个自我否定之人的日记
             </m.h3>
             <Link href={routeBuilder(Routes.Note, { id: theLast.nid })}>
               <m.div
@@ -396,7 +419,7 @@ const NoteScreen = () => {
                 }}
                 className="text-lg"
               >
-                这里还有一些历史回顾
+                日记的下一页，也许是欢乐，也许是悲伤，也许……什么也不是
               </m.div>
               <ul className="shiro-timeline mt-4">
                 {history.map((note, i) => {
@@ -447,7 +470,9 @@ const NoteScreen = () => {
                     className="shiro-link--underline"
                     href={routeBuilder(Routes.Posts, {})}
                   >
-                    还有更多，要不要看看？
+                    历史的车轮滚滚向前，留下清晰可见的痕迹……
+                    <br />
+                    回忆
                   </Link>
                 </MotionButtonBase>
               </m.div>
@@ -455,15 +480,19 @@ const NoteScreen = () => {
           )}
         </div>
         <m.h2
-          className="text-3xl font-medium leading-loose"
-          initial={{ opacity: 0.0001 }}
-          animate={{
-            opacity: 1,
+          initial={{ opacity: 0.0001, y: 50 }}
+          animate={{ opacity: 0.8, y: 0 }}
+          transition={{
+            ...softBouncePreset,
+            delay: 0.5,
           }}
+          className="text-lg"
         >
-          而在这里，你会看到一个不同的我，
+          对他而言，发泄情绪的最好办法，似乎就只剩下自我否定
           <br />
-          一个在生活中发现美，感受痛苦，洞察人性的我。
+          所以，「鸟为什么会飞」，他和那位白发少年一样，在找寻着答案
+          <br />
+          不喜欢日记的他，活成了他不喜欢的样子，尽管日记是断续的
         </m.h2>
       </TwoColumnLayout>
     </Screen>
@@ -492,7 +521,7 @@ const FriendScreen = () => {
     <Screen className="flex h-auto min-h-screen center">
       <div className="flex min-w-0 flex-col">
         <BottomToUpTransitionView className="text-center text-3xl font-medium">
-          这些是我珍视的人，他们陪伴我走过人生的每一段旅程。
+          尽管他不愿意承认，但他的朋友越来越多，无形中形成了支撑他前进的动力
         </BottomToUpTransitionView>
         <ul
           className={clsx(
@@ -545,7 +574,7 @@ const FriendScreen = () => {
               className="shiro-link--underline"
               href={routeBuilder(Routes.Friends, {})}
             >
-              还有更多，要不要看看？
+              认识他的「朋友们」
             </Link>
           </MotionButtonBase>
         </BottomToUpTransitionView>
