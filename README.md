@@ -6,9 +6,9 @@
 
 ## :heart: 鸣谢 & 许可
 
-2023 © Innei，本项目采用 AGPL-3.0 许可证发布。
+2023 © Innei，本软件遵循 AGPLv3 许可证，附加特定的商业使用条件。此外，使用本项目还需要遵循[附加条款和条件](ADDITIONAL_TERMS.md)。
 
-部分代码由 GPT-4 和 [cali.so](https://github.com/CaliCastle/cali.so) 提供。
+部分代码参考自 GPT-4 和 [cali.so](https://github.com/CaliCastle/cali.so)。
 
 感谢 Mix Space Team 和广大社区朋友们的贡献。
 
