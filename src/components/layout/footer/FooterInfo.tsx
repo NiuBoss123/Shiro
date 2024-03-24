@@ -172,10 +172,6 @@ const FooterBottom = async () => {
             站点地图
           </a>
           <Divider className="inline" />
-
-          <SubscribeTextButton>
-            <Divider className="hidden md:inline" />
-          </SubscribeTextButton>
         </span>
       </p>
       <div>
