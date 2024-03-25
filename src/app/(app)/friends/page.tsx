@@ -270,7 +270,7 @@ const ApplyLinkInfo: FC = () => {
               seo.title
             }](${`${location.protocol}//${location.host}`})`,
             `**站点描述**: ${seo.description}`,
-            `**主人头像**: [点击下载](${avatar}) (${avatar})`,
+            `**主人头像**: ${avatar}`,
             `**主人名字**: ${name}`,
           ].join('\n\n')}
         </Markdown>
