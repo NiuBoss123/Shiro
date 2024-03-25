@@ -156,7 +156,7 @@ const FooterBottom = async () => {
 
   return (
     <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left">
-      <p>
+       <p>
         <span>© {date.replace('{{now}}', currentYear)} </span>
         <a href="/">
           <OwnerName />
@@ -172,6 +172,13 @@ const FooterBottom = async () => {
             站点地图
           </a>
           <Divider className="inline" />
+
+          <SubscribeTextButton>
+            <Divider className="hidden md:inline" />
+          </SubscribeTextButton>
+        </span>
+        <span className="mt-3 block md:mt-0 md:inline">
+          为世界上所有的美好而战
         </span>
       </p>
       <div>
