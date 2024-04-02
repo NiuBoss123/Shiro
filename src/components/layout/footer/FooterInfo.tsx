@@ -192,7 +192,7 @@ const FooterBottom = async () => {
           </SubscribeTextButton>
         </span>
         <span className="mt-3 block md:mt-0 md:inline">
-          Stay hungry. Stay foolish.
+          为世界上所有的美好而战
         </span>
       </p>
       <div>
