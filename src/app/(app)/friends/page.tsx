@@ -271,7 +271,7 @@ const ApplyLinkInfo: FC = () => {
             `**站点标题**: [${
               seo.title
             }](${`${location.protocol}//${location.host}`})`,
-            `**站点地址**: [${`${location.protocol}//${location.host}`})`,
+            `**站点地址**: ${`${location.protocol}//${location.host}`}`,
             `**站点描述**: ${seo.description}`,
             `**主人头像**: ${avatar}`,
             `**主人名字**: ${name}`,
