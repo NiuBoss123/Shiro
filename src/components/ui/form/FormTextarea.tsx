@@ -5,7 +5,7 @@ import type { FormFieldBaseProps } from './types'
 import { AutoResizeHeight } from '~/components/modules/shared/AutoResizeHeight'
 import { clsxm } from '~/lib/helper'
 
-import { Input } from '../input'
+import { TextArea } from '../input'
 import { useFormConfig } from './FormContext'
 import {
   useAddField,
@@ -14,16 +14,19 @@ import {
   useResetFieldStatus,
 } from './hooks'
 
-export const FormInput: FC<
+export const FormTextarea: FC<
   Omit<
-    DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+    DetailedHTMLProps<
+      InputHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >,
     'name'
   > &
     FormFieldBaseProps<string>
 > = memo(({ className, rules, onKeyDown, transform, name, ...rest }) => {
   const { showErrorMessage } = useFormConfig()
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const errorMessage = useFormErrorMessage(name)
   useAddField({
@@ -35,7 +38,7 @@ export const FormInput: FC<
   const resetFieldStatus = useResetFieldStatus(name)
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (onKeyDown) onKeyDown(e)
       resetFieldStatus()
     },
@@ -46,7 +49,7 @@ export const FormInput: FC<
 
   return (
     <>
-      <Input
+      <TextArea
         name={name}
         ref={inputRef}
         className={clsxm(
@@ -74,4 +77,4 @@ export const FormInput: FC<
   )
 })
 
-FormInput.displayName = 'FormInput'
+FormTextarea.displayName = 'FormTextarea'
