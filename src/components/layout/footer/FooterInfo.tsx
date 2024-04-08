@@ -199,7 +199,7 @@ const FooterBottom = async () => {
           </SubscribeTextButton>
         </span>
         <span className="mt-3 block md:mt-0 md:inline">
-          <a href="https://www.bh3.com" target="_blank">
+          <a href="https://www.bh3.com/main" target="_blank">
           为世界上所有的美好而战
           </a>
         </span>
