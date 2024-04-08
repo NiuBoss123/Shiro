@@ -1,3 +1,5 @@
+'use client'
+
 import * as RadixTabs from '@radix-ui/react-tabs'
 import {
   createContext,
@@ -12,6 +14,8 @@ import { m } from 'framer-motion'
 import type { FC, PropsWithChildren } from 'react'
 
 import { clsxm } from '~/lib/helper'
+
+import { Markdown } from '../Markdown'
 
 const TabActionContext = createContext<{
   addTab: (label: string) => void
@@ -80,5 +84,11 @@ export const Tab: FC<{
     return addTab(label)
   }, [])
 
-  return <RadixTabs.Content value={label}>{children}</RadixTabs.Content>
+  return (
+    <RadixTabs.Content value={label}>
+      <Markdown wrapper={null} removeWrapper>
+        {children as string}
+      </Markdown>
+    </RadixTabs.Content>
+  )
 }
