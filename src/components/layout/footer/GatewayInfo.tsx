@@ -18,12 +18,16 @@ import { routeBuilder, Routes } from '~/lib/route-builder'
 const Help = () => {
   return (
     <FloatPopover
+      mobileAsSheet
       as="span"
       triggerElement={
         <i className="icon-[mingcute--question-line] cursor-help" />
       }
       type="tooltip"
       asChild
+      sheet={{
+        triggerAsChild: true,
+      }}
     >
       <div className="space-y-2 leading-relaxed">
         <p className="flex items-center space-x-1 opacity-80">
@@ -58,30 +62,27 @@ const ConnectedIndicator = () => {
         trackerMessage="socket_status"
         action={TrackerAction.Impression}
       />
-      {connected ? (
-        <>
-          <span
-            className="absolute size-5"
-            style={{
-              background: `radial-gradient(45.91% 45.91% at 49.81% 54.09%, #00FC47 7.13%, rgba(174, 244, 194, 0.46) 65.83%, rgba(252, 252, 252, 0.00) 100%)`,
-            }}
-          />
-
-          <span className="ml-6">已连接</span>
-        </>
-      ) : (
-        <>
-          <span
-            className="absolute size-5"
-            style={{
-              background: `radial-gradient(45.91% 45.91% at 49.81% 54.09%, #FC0000 7.13%, rgba(244, 174, 174, 0.46) 65.83%, rgba(252, 252, 252, 0.00) 100%)`,
-            }}
-          />
-
-          <span className="ml-6">未连接</span>
-        </>
-      )}
+      <ConnectionStatus isConnected={connected} />
     </div>
+  )
+}
+
+function ConnectionStatus({ isConnected }: { isConnected: boolean }) {
+  const color = isConnected ? '#00FC47' : '#FC0000'
+  const secondaryColor = isConnected
+    ? 'rgba(174, 244, 194, 0.46)'
+    : 'rgba(244, 174, 174, 0.46)'
+  const text = isConnected ? '已连接' : '未连接'
+
+  const backgroundStyle = {
+    background: `radial-gradient(45.91% 45.91% at 49.81% 54.09%, ${color} 7.13%, ${secondaryColor} 65.83%, rgba(252, 252, 252, 0.00) 100%)`,
+  }
+
+  return (
+    <>
+      <span className="absolute size-5" style={backgroundStyle} />
+      <span className="ml-6">{text}</span>
+    </>
   )
 }
 
@@ -94,6 +95,7 @@ export const GatewayInfo = () => {
     <div className="inline-flex items-center gap-2">
       <FloatPopover
         asChild
+        mobileAsSheet
         placement="top"
         trigger="both"
         offset={10}
@@ -170,7 +172,7 @@ const RoomsInfo = () => {
   if (data.length === 0)
     return <div className="text-gray-500">还没有小伙伴在阅览文章哦~</div>
   return (
-    <div className="max-w-[80vw] lg:max-w-[400px]">
+    <div className="lg:max-w-[400px]">
       <div className="mb-2 text-sm font-medium">下面的内容正在被看爆：</div>
       <ul className="flex flex-col justify-between gap-2">
         {data.map((room) => (

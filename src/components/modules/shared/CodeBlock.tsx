@@ -6,7 +6,6 @@ import type { ReactNode } from 'react'
 
 import { HighLighterPrismCdn } from '~/components/ui/code-highlighter'
 import { ShikiHighLighterWrapper } from '~/components/ui/code-highlighter/shiki/ShikiWrapper'
-import { isSupportedShikiLang } from '~/components/ui/code-highlighter/shiki/utils'
 import { ExcalidrawLoading } from '~/components/ui/excalidraw/ExcalidrawLoading'
 import { isClientSide } from '~/lib/env'
 
@@ -65,35 +64,36 @@ export const CodeBlockRender = (props: {
         const lang = props.lang
         const nextProps = { ...props }
         nextProps.content = formatCode(props.content)
-        if (lang && isSupportedShikiLang(lang)) {
+        if (lang) {
           const ShikiHighLighter =
             shikiImport ??
             lazy(() =>
-              import('~/components/ui/code-highlighter/shiki/Shiki').then(
-                (mod) => ({
-                  default: mod.ShikiHighLighter,
-                }),
-              ),
+              import('~/components/ui/code-highlighter').then((mod) => ({
+                default: mod.ShikiFallback,
+              })),
             )
           if (isClientSide) {
             shikiImport = ShikiHighLighter
           }
+
+          const fallback = (
+            <ShikiHighLighterWrapper {...nextProps}>
+              <pre className="bg-transparent px-5">
+                <code className="!px-5 !text-base-content">
+                  {nextProps.content}
+                </code>
+              </pre>
+            </ShikiHighLighterWrapper>
+          )
+          if (!isClientSide) return fallback
           return (
-            <Suspense
-              fallback={
-                <ShikiHighLighterWrapper {...nextProps}>
-                  <pre className="bg-transparent px-5">
-                    <code className="!px-5">{nextProps.content}</code>
-                  </pre>
-                </ShikiHighLighterWrapper>
-              }
-            >
+            <Suspense fallback={fallback}>
               <ShikiHighLighter {...nextProps} />
             </Suspense>
           )
         }
 
-        return <HighLighterPrismCdn {...props} />
+        return <HighLighterPrismCdn {...nextProps} />
       }
     }
   }, [props])
