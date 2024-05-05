@@ -251,7 +251,7 @@ const ApplyLinkInfo: FC = () => {
   })
   const { present } = useModalStack()
   if (!canApply) {
-    return <NotSupport className="mt-20" text="主人禁止了申请友链。" />
+    return <NotSupport className="mt-20" text="主人关闭了申请友链通道，请邮件至 niuboss123@foxmail.com 申请友链" />
   }
   return (
     <>
