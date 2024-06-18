@@ -95,7 +95,6 @@ export default function Page() {
             <FavoriteSection data={collections} />
           </>
         )}
-
         {outdated.length > 0 && (
           <>
             <Collapse
@@ -117,7 +116,7 @@ export default function Page() {
               <BannedSection data={banned} />
             </Collapse>
           </>
-        )}
+        )} 
       </main>
 
       <ApplyLinkInfo />
@@ -276,7 +275,7 @@ const ApplyLinkInfo: FC = () => {
             `- 确保您的网站不存在政治敏感问题及违法内容。没有过多的广告、无恶意软件、脚本。且转载文章须注明出处。`,
             `- 若站点长时间无法访问，我们会暂时归档您的友链，恢复后可再次申请。`,
             `- 确保站点可以以 HTTPS 访问。`,
-            `- 暂时不同意商业及非个人的网站的友链申请 (朋友和合作者除外)。`,
+            `- 商业及非个人的网站的友链申请均不通过 (朋友和合作者除外)。`,
           ].join('\n\n')}
         </Markdown>
         <Markdown className="[&_p]:!my-1">
@@ -286,6 +285,12 @@ const ApplyLinkInfo: FC = () => {
             `**地址**: ${`${location.protocol}//${location.host}`}`,
             `**描述**: ${seo.description}`,
             `**头像**: ${avatar}`,
+          ].join('\n\n')}
+        </Markdown>
+        <Markdown>
+          {[
+            `**补充提醒**`,
+            `- 由于一些友链名单上的网站的站长对部分友链反感，我已经下架了一部分友链，望各位友好教堂，避免引起不必要的麻烦。`,
           ].join('\n\n')}
         </Markdown>
       </div>
@@ -360,7 +365,7 @@ const FormModal = () => {
     },
     {
       name: 'email',
-      placeholder: '留下你的邮箱哦 *',
+      placeholder: '你的邮箱 *',
 
       rules: [
         {
@@ -371,16 +376,16 @@ const FormModal = () => {
     },
     {
       name: 'description',
-      placeholder: '一句话描述一下自己吧 *',
+      placeholder: '你的站点简介 *',
 
       rules: [
         {
           validator: (value: string) => !!value,
-          message: '一句话描述一下自己吧',
+          message: '一句话描述一下自己的网站吧',
         },
         {
           validator: (value: string) => value.length <= 50,
-          message: '一句话描述不要超过50个字啦',
+          message: '不要超过50个字啦',
         },
       ],
     },
