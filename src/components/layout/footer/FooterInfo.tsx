@@ -182,7 +182,7 @@ const FooterBottom = async () => {
       <p>
         <span>© {date.replace('{{now}}', currentYear)} </span>
         <a href="/">
-          <OwnerName />
+          Misaka Akio
         </a>
         <span>.</span>
         <span>
